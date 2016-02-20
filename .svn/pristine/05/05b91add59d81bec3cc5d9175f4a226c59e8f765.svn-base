@@ -1,0 +1,88 @@
+package com.xidian.controller;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.URLEncoder;
+import java.util.Date;
+
+import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.xidian.forms.GradeTemp;
+import com.xidian.mastergrade.MasterMain;
+import com.xidian.mastergrade.MasterUserInfo;
+import com.xidian.service.api.GradeTempService;
+import com.xidian.util.QuerySecret;
+
+@Controller
+public class MasterGradeController {
+	@Resource(name="gradeTempServiceImpl")
+	GradeTempService gradeTempService;
+	
+	@RequestMapping(value="queryMasterGrade",method={RequestMethod.POST,RequestMethod.GET})
+	public ModelAndView queryGradeAction(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		//首次登陆
+	    ModelAndView tempView = new ModelAndView("p/queryMasterGradePage");
+	    
+	    try {
+	    
+	    String username = request.getParameter("username");
+	    String password = request.getParameter("password");
+	    Cookie userCookie = new Cookie("usernameGrade", URLEncoder.encode(QuerySecret.addSecret(username), "utf-8"));
+	    Cookie passCookie = new Cookie("passwordGrade", URLEncoder.encode(QuerySecret.addSecret(password), "utf-8"));
+	    MasterUserInfo masterUserInfo = MasterMain.test(username,password);
+	    if (masterUserInfo == null) {
+	    	tempView.addObject("status", "fail");
+	    	tempView.addObject("info", "查询失败！");
+	    	tempView.setViewName("p/queryGrade");
+	    } else {
+	    	//标志时间
+	    	Date now = new Date(); 
+	    	Cookie tempCookie= new Cookie("gradeTest",String.valueOf(now.getTime()));
+	    	tempCookie.setMaxAge(3600);
+	    	response.addCookie(tempCookie);
+	    	tempView.addObject("hours", 0);
+	    	tempView.addObject("minutes", 1);
+	    	tempCookie = new Cookie("level", "master");
+	    	tempCookie.setMaxAge(Integer.MAX_VALUE);
+	    	response.addCookie(tempCookie);
+	    	
+		    //用户名密码写入cookie
+	    	userCookie.setMaxAge(Integer.MAX_VALUE);
+		    passCookie.setMaxAge(Integer.MAX_VALUE);
+		    response.addCookie(userCookie);
+		    response.addCookie(passCookie);
+		    tempView.addObject("userinfo", masterUserInfo.getUserDesc());
+	    	tempView.addObject("grade", masterUserInfo.getGradeInfo());
+		    //序列化
+	    	ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();  
+	        ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);  
+	        objectOutputStream.writeObject(masterUserInfo);    
+	        String serStr = byteArrayOutputStream.toString("ISO-8859-1");  
+	        serStr = java.net.URLEncoder.encode(serStr, "UTF-8");  
+	        objectOutputStream.close();  
+	        byteArrayOutputStream.close();  
+	        //写入数据库
+	        GradeTemp gradeTemp = new GradeTemp();
+	        gradeTemp.setContent(serStr);
+	        gradeTemp.setUsername(username);
+	        gradeTempService.addGradeTemp(gradeTemp);
+	    }
+	    return tempView;
+	    
+	    } catch (Exception e) {
+			tempView.setViewName("p/queryGrade");
+	    	tempView.addObject("status", "fail");
+	    	tempView.addObject("info", "抱歉，请稍后重试，或直接通过微信与小蘑菇联系。");
+	    	return tempView;
+		}
+	}
+}

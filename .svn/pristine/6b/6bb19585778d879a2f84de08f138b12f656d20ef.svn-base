@@ -1,0 +1,21 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>匹配结果</title>
+</head>
+<body>
+<img alt="" src="<c:url value="${curPerson.photourl}"/>" style="width:300px">
+
+<img alt="" src="<c:url value="${matchPerson.photourl}"/>" style="width:300px">
+
+相似度：${confidence} 
+<form action="viewSingleInfo" method="POST">
+	<input type="hidden" name="singleId"  value="${singleId }"/>
+	<input type="submit" value="查看ta的信息"/>
+</form>
+</body>
+</html>

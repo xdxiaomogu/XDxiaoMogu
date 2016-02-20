@@ -1,0 +1,110 @@
+package com.xidian.controller;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.xidian.activity.RankerJson;
+import com.xidian.forms.Ranker;
+import com.xidian.forms.SingleInfo;
+import com.xidian.forms.Votes;
+import com.xidian.service.api.RankerService;
+import com.xidian.service.api.SingleInfoService;
+import com.xidian.service.api.VotesService;
+
+@Controller
+public class RankerController {
+	@Resource(name = "rankerServiceImpl")
+	RankerService rankerService;
+	@Resource(name = "votesServiceImpl")
+	VotesService votesService;
+	@Resource(name = "singleInfoServiceImpl")
+	SingleInfoService singleInfoService;
+
+	// 送鲜花或投票功能
+	@RequestMapping(value = "Vote", method = { RequestMethod.POST, RequestMethod.GET })
+	public void login(HttpServletRequest request, HttpServletResponse response) throws JSONException, IOException {
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		JSONObject ret = new JSONObject();
+		// 身份标识，根据此字段保证只能投票一次
+		String identity = request.getParameter("identity");
+		// 投票给somebody
+		String rankerId = request.getParameter("rankerId");
+		try {
+			Votes tmpItem = votesService.getVoteByIdentity(identity);
+			if (tmpItem == null) {
+				//新增一条投票记录
+				Votes tmpVote=new Votes();
+				tmpVote.setIdentity(identity);
+				tmpVote.setRankerId(Integer.parseInt(rankerId));
+				tmpVote.setCreateAt(new Date());//获取当前日期
+				votesService.addVote(tmpVote);
+				//更新鲜花数目
+				Integer tmpRankerId = Integer.parseInt(rankerId);
+				Ranker tmpRanker = rankerService.getRankerById(tmpRankerId);
+				Integer latestNum = tmpRanker.getCountFollowers() + 1;
+				tmpRanker.setCountFollowers(latestNum);
+				rankerService.updateRanker(tmpRanker);
+				ret.put("Response", "送花成功");
+				ret.put("Status", "success");
+			} else {
+				ret.put("Response", "您已经送过鲜花了。。。");
+				ret.put("Status", "fail");
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		response.getWriter().write(ret.toString());
+	}
+
+	@RequestMapping(value = "displayRanker", method = { RequestMethod.POST, RequestMethod.GET })
+	public ModelAndView stuSearchCards(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			request.setCharacterEncoding("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		List<Ranker> tempList = new ArrayList<Ranker>();
+		List<RankerJson> jsonList= new ArrayList<RankerJson>();
+		try {
+			tempList = rankerService.getRankerDiy(10);//排行榜显示前十
+			if(tempList!=null){
+				for(int i=0;i<tempList.size();i++){
+					RankerJson tmpJson=new RankerJson();
+					Ranker tmpRanker=tempList.get(i);
+					tmpJson.setFollowers(tmpRanker.getCountFollowers());
+					tmpJson.setId(tmpRanker.getUuid());
+					tmpJson.setCreateAt(tmpRanker.getCreateAt());
+					tmpJson.setMatchs(tmpRanker.getMatchs());
+					SingleInfo singleInfoA=singleInfoService.getSingleInfoById(tmpRanker.getAuserId());
+					SingleInfo singleInfoB=singleInfoService.getSingleInfoById(tmpRanker.getBuserId());
+					tmpJson.setAuserImgUrl(singleInfoA.getPhotourl());
+					tmpJson.setBuserImgUrl(singleInfoB.getPhotourl());
+					jsonList.add(tmpJson);
+				}
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ModelAndView tempView = new ModelAndView("p/stuCardsList");//排行榜页面待定
+		tempView.addObject("rankerList", jsonList);
+		return tempView;
+	}
+}

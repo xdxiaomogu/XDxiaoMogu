@@ -1,0 +1,186 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html>
+<html lang="en" class="app">
+<head>
+<title>西电小蘑菇</title>
+<link href="p/images/xd_logo.png" rel="shortcut icon"/>
+<meta name="description"
+	content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1" />
+<link rel="stylesheet" href="p/css/app.v2.css" type="text/css" />
+<style  type="text/css">
+	.myhead
+	{
+		height: 44px;
+		text-align:center;
+		font-size:18px;
+		line-height: 44px;
+		font-family: "Microsoft Yahei",Arial;
+		font-weight: lighter;
+		letter-spacing: 0;
+		color: #FFFFFF;
+		margin-top: 0px;
+		/*background-color: #099fde;*/
+		background-color:#FFA042;
+		font-color:#000000
+	}
+	/*.flight-btnsrh {
+	  width: 100%;
+	  height: 44px;
+	  line-height: 44px;
+	  font-size: 18px;
+	  color: #fff;
+	  background: #ff7d13;
+	  border-radius: 3px;
+	  margin: 30px 0 15px;
+	}*/
+	button{
+		font: 400 14px/1.5 "Hiragino Sans GB","Microsoft YaHei",hei,Arial,"Lucida Grande",Verdana;
+		border: 0;
+		background-color:#FFA042;
+		color:#fff;
+	}
+	ul, ol {
+	  padding-left: 0;
+	  list-style-type: none;
+	}
+	.h{
+		text-align:center;
+		font-size:20px;
+		border-bottom: 1px solid #d9dadc;
+		padding-bottom: 10px;
+	}
+	span{
+	color: #8d8d8d;
+	}
+	li{
+	margin-bottom: 5px;
+	list-style-type:none;
+	}
+	.label{
+		color: #000000;
+		font-size:20px;
+	}
+	h4{
+		border-bottom: 1px solid #d9dadc;
+		padding-bottom: 15px;
+	}
+	body{
+		height:400px;
+		background-color:#D2E9FF;
+	}
+	h3{
+		border-bottom:4px solid #877bc7;
+		padding-bottom:9px;
+		margin-top:30px;
+		width:200px;
+	}
+	
+</style>
+</head>
+<body>
+	<!--  <header style="font-color:#000000">
+		<h1 class="myhead">寻找与你最有夫妻相的人</h1>
+	</header>-->
+	<header>
+		<div class="row" style="margin-left:10px;margin-top:20px">
+			<div class="col-lg-4">
+				<div style="float:left"><img src="p/images/logo1.png"/></div>
+				<div style="float:left">
+					<h3><span style="color:#7467BF">&nbsp;众里寻</span><span style="color:#e35969;font-size:34px;"><b>ta</b></span></h3>
+				</div>
+			</div>
+		</div>		
+	</header>
+	<!--  <div class="row" style="margin:0px;margin-top:-20px">
+	    <div class="col-lg-12">
+	        <h3 class="page-header">填写基本信息<img src="p/images/xd_logo.png" class="m-r-sm pull-right"></h3>
+	    </div>
+	</div>-->
+	
+	<div class="row" style="padding-left:10px;padding-right:10px" >
+		<div class="col-lg-1 col-xs-1"></div>
+		<div class="col-lg-3 col-xs-11">
+			<div class="row">
+				<b style="color:black;display:block;text-align:center;font-size:15px">为了帮你找到ta，基本信息是必不可少的哦~ ！</b>
+			</div>
+			<div class="row" style="margin-left:-20px">
+				<div class="panel-body text-center">
+					<sf:form action="signSingleActivity" role="form"  method="post" id="signSingleActivity" modelAttribute="singleInfo" accept-charset="utf-8"> 
+						<div class="form-group"> 
+							<sf:input path="name" placeholder="可以告诉我你的大名吗？" class="form-control input-lg" /> 
+						</div>
+						<div class="form-group"> 
+							<sf:input path="school" placeholder="那你是哪个学校的呀？" class="form-control input-lg" /> 
+						</div> 
+						<div class="form-group"> 
+							<sf:input path="college" placeholder="当然还有学院啦！" class="form-control input-lg" /> 
+						</div>
+						<div class="form-group"> 
+							<sf:input path="grade" placeholder="年级也不能错过哦~" class="form-control input-lg" /> 
+						</div>
+						<div class="form-group"> 
+							<sf:input path="qq" placeholder="为了让ta联系到你，qq号也得有哦" class="form-control input-lg" /> 
+						</div>
+						<div class="form-group"> 
+							<sf:input path="hobby" placeholder="兴趣相投才能更愉快的玩耍！说说你有啥兴趣爱好吧！" class="form-control input-lg" /> 
+						</div>
+						<div class="form-group" style="float:left;font-size:18px"> 
+							<sf:radiobutton path="gender" value="boy" />&nbsp;帅哥 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<sf:radiobutton path="gender" value="girl" />&nbsp;美女 
+						</div>
+						
+						<div class="form-group" style="text-align:left;font-size:18px"> 
+							<sf:radiobutton path="target" value="0"  />&nbsp;我要找妹纸<br>
+							<sf:radiobutton path="target" value="1" />&nbsp;我要找汉纸 <br>
+							<sf:radiobutton path="target" value="2" />&nbsp;汉纸、妹纸都可以<br>
+						</div>
+						<div class="form-group"> 
+							<button type="submit" id="sign" class="btn btn-s-md pull-right">提&nbsp;&nbsp;&nbsp;交</button>
+						</div>
+					</sf:form> 
+				</div>
+			</div>
+		</div>
+		<!--弹出显示框-->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		    <br><br><br><br><br>
+		    <div class="modal-dialog">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		                <h5 class="modal-title" id="myModalLabel">提示</h5>
+		            </div>
+		            <div class="modal-body">
+		           		<h5><div id="result"></div></h5>
+		            </div>
+		            <div class="modal-footer">
+		            	<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+		            </div>
+		        </div>
+		        <!-- /.modal-content -->
+		    </div>
+		</div>
+	</div>
+				
+	<div class="panel-footer text-center" style="position:fixed;bottom:0px;left:0px;rigth:0px;width:100%">
+		<small>本流量查询由西电小蘑菇独家提供</small><br>
+		<img src="p/images/xd_logo.png" class="m-r-sm" style="width:20px">
+	</div>
+	<script src="p/js/app.v2.js"></script>
+	<!-- Easy Pie Chart -->
+	<script src="p/js/charts/easypiechart/jquery.easy-pie-chart.js"
+		cache="false"></script>
+	<script src="p/js/rnn/signSingleActivity.js"></script>
+</body>
+<script>
+	if('${status}' == "fail") {
+		txtHtml="<p class='text-warning'>" + "${info}" + "</p>";
+    	$("#result").html(txtHtml);
+		$("#myModal").modal("show");
+	}
+</script>
+</html>

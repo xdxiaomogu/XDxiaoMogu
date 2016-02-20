@@ -1,0 +1,7 @@
+eclipse.preferences.version=1
+encoding//WebContent/p/lowResult.jsp=UTF-8
+encoding//WebContent/p/navHead.jsp=UTF-8
+encoding//src/com/xidian/filter/AccessFilter.java=UTF-8
+encoding//src/com/xidian/grade/Main.java=UTF-8
+encoding//src/com/xidian/mastergrade/MasterMain.java=UTF-8
+separateDerivedEncodings=true

@@ -1,0 +1,108 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="description"
+			content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1, maximum-scale=1" />
+		<title>上传照片</title>
+		<!--  <link href="p/css/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css" rel="stylesheet"/>
+		<link href="p/css/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet"/>
+		<link href="p/css/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet"/>
+		<link href="p/css/uploadify.css" rel="stylesheet"/>-->
+		<link rel="stylesheet" href="p/css/app.v2.css" type="text/css" />
+		<style>
+			#cancel,button{
+				background-color:#877bc7;
+				color:white;
+			}
+			body{
+				background-color:#D2E9FF;
+			}
+			h3{
+				border-bottom:4px solid #877bc7;
+				padding-bottom:9px;
+				margin-top:30px;
+				width:200px;
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<div class="row" style="margin-left:10px;margin-top:20px">
+				<div class="col-lg-4 col-xs-12">
+					<div class="row">
+						<div class="col-xs-4" style="float:left"><img src="p/images/logo2.png"/></div>
+						<div class="col-xs-8">
+							<h3><span style="color:#7467BF">&nbsp;众里寻</span><span style="color:#e35969;font-size:34px;"><b>ta</b></span></h3>
+						</div>
+					</div>
+				</div>
+			</div>		
+		</header>
+		<div class="row" style="margin-top:30px;margin-left:20px">			
+			<div class="col-lg-4 col-xs-12">
+				<div class="row">
+					<div class="panel-body text-center">
+						<form action="uploadPicture" enctype="multipart/form-data" method="POST">
+							<div class="row">								
+								<div class="col-xs-11" style="font-size:18px;font-weight:bold;color:black">									
+										<span>上传一张美美哒、帅帅哒照片吧~ ！</span><br>									
+								</div>
+								<div class="col-xs-1"></div>
+							</div>
+							<div class="row" style="margin-top:30px">
+								<div class="col-xs-2"></div>
+								<div class="col-xs-8">
+									<div id="img_div" style="width:150px;height:150px;border:1px solid black">										
+										<span class="fileinput-button" style="display:block">											
+											<img id="img_show" style="width:150px;height:150px;"/>
+											<input type="file" name="image" id="img_up" style="width:150px;height:150px;" />
+										</span>				
+									</div>
+								</div>
+								<div class="col-xs-2"></div>
+							</div>
+							<div class="row" style="margin-top:30px;margin-left:20px">
+								<table>
+									<tr>
+										<td rowspan="2"><img src="p/images/gift.png"/></td>
+										<td>偷偷告诉你，要上传一张正脸、大头照哦~ ！</td>
+									</tr>
+									<tr>										
+										<td style="text-align:left">这样找到的ta才更加美丽~~~~</td>
+									</tr>
+								</table>
+								</div>
+							 <div class="row" style="margin-top:50px">							
+								<input type="hidden" name="Uuid" value="${Uuid}"/>
+								<div class="col-xs-6" style="padding-left:0">
+										<button type="submit" id="sign" class="btn btn-s-md">提交</button>
+									</div>
+									<div class="col-xs-6" style="padding-left:0">
+										<a  id="cancel" class="btn btn-s-md" href="<c:out value='singleActivity'/>">取消</a>
+									</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--  <form action="uploadPicture" enctype="multipart/form-data" method="POST">
+			<input type="file" name="image"/>
+			<input type="hidden" name="Uuid" value="${Uuid}"/>
+			<input type="submit" />
+		</form>-->
+	</body>
+	<script src="p/js/app.v2.js"></script>
+	<script src="p/js/upload/uploadPreview.js"></script>
+	<script>
+		$(function(){
+			new uploadPreview({ UpBtn: "img_up", DivShow: "img_div", ImgShow: "img_show"});
+		});
+	</script>
+</html>

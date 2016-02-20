@@ -1,0 +1,100 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="description"
+		content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, maximum-scale=1" />
+	<link rel="stylesheet" href="p/css/app.v2.css" type="text/css" />
+	<title>我参加了众里寻ta活动，在西电找到了心仪的ta,你还不行动吗</title>
+	<style>
+		#cancle,button{
+			background-color:#877bc7;
+			color:white;
+		}
+		.pic{
+			width:120px;
+			height:120px;
+		}
+	</style>
+</head>
+<body>
+	<div class="row" style="padding-left:10px;padding-right:10px;margin-top:30px">
+		<div class="col-lg-4">
+			<div class="row" style="margin-left:-20px">
+				<div class="panel-body text-center">
+					<div class="row">
+						<div class="col-xs-1"></div>
+						<div class="col-xs-4">
+							<img class="pic" alt="" src="<c:url value="${matchPerson.photocompress}"/>">
+						</div>
+						<div class="col-xs-2" >
+							<img src="p/images/heart2.png" width="50px" style="margin-top:20px">
+						</div>
+						<div class="col-xs-4">
+							<img class="pic" alt="" src="<c:url value="${curPerson.photocompress}"/>">
+						</div>
+					</div>
+					<div class="row" style="margin-top:30px">						
+							<span style="color:red;font-size:20px;font-weight:bold">你们的匹配程度为：<span class="confidence" val="${confidence}">${confidence} %</span></span>						
+					</div>
+					 <div class="row" style="margin-top:10px;margin-bottom:20px">
+					 	<span class="text text-50">哇！你们相当登对哦~ ！还不赶紧行动，抓紧联系嘛？！！！</span>
+					 	<span class="text text-75">哇!看到我羡慕的眼光了吗！！！这么般配的人还能去哪里寻找！！！快点行动吧~~~</span>
+					 	<span class="text text-90">恭喜荣登我们的夫妻脸排行榜啦～～～快去呼唤小伙伴给你投票吧</span>
+					 </div>
+					 <!--  <div class="text-0">
+					 	<div style="text-align:left;padding-left:20px;"><img src="p/images/logo2.png"/></div>
+					 	<div style="width:80%;background:#877bc7;padding:20px;margin-left:30px;color: white;font-size: 18px;">亲爱的，您长得实在是太beautiful了，我们还没发现能配得上你的人哦~！不要灰心，你可以过几天再来哦~！或者等待有缘的ta联系你吧~！</div>
+					 </div>-->
+					 <div class="form-group"> 
+					 	<form action="viewSingleInfo" method="POST">
+							<input type="hidden" name="singleId"  value="${singleId }"/>
+							<input type="hidden" name="matchPic"  value="${matchPerson.photocompress}"/>
+							<input type="hidden" name="thisPic"  value="${curPerson.photocompress}"/>
+							<input type="hidden" name="con"  value="${confidence}"/>
+							<!--  <input type="submit" value="查看ta的信息"/>-->
+							<div class="col-xs-5" style="padding-left:0">
+								<button type="submit" id="sign" class="btn btn-s-md">查看对方信息</button>
+							</div>
+							<div class="col-xs-7" style="padding-left:0;">
+								<span style="height:34px; line-height:34px;">分享到朋友圈让好朋友们看到与你匹配的ta</span>
+								<%-- <a  id="cancel" class="btn btn-s-md" href="<c:out value='singleActivity'/>">取消</a> --%>
+							</div>	
+						</form>
+														
+					</div>
+				</div>
+			</div>
+		</div>		
+	</div>
+</body>
+<script src="p/js/app.v2.js"></script>
+<script>
+		$(function(){
+			var confidence=parseInt($(".confidence").attr("val"));
+			if(confidence > 85){
+				$(".text").hide();
+				$(".text-90").show();
+			}else if(confidence > 75){
+				$(".text").hide();
+				$(".text-75").show();
+			}else if(confidence > 40){
+				$(".text").hide();
+				$(".text-50").show();
+			}
+			//else{
+				//alert("------");
+				/* $(".text").hide();
+				$(".form-group").hide();
+				$(".text-0").show(); */
+				//window.open("p/lowResult.jsp");
+				//window.location.href="p/lowResult.jsp";
+			//}
+		});
+	</script>
+</html>

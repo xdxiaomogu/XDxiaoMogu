@@ -1,0 +1,251 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html>
+<html lang="en" class="app">
+<head>
+<title>西电小蘑菇</title>
+<link href="p/images/xd_logo.png" rel="shortcut icon"/>
+<meta name="description"
+	content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1" />
+<link rel="stylesheet" href="p/css/app.v2.css" type="text/css" />
+<style  type="text/css">
+	/*.myhead
+	{
+		height: 44px;
+		text-align:center;
+		font-size:18px;
+		line-height: 44px;
+		font-family: "Microsoft Yahei",Arial;
+		font-weight: lighter;
+		letter-spacing: 0;
+		color: #FFFFFF;
+		margin-top: 0px;
+		background-color:#FFA042;
+		font-color:#000000
+	}
+	.flight-btnsrh {
+	  width: 100%;
+	  height: 44px;
+	  line-height: 44px;
+	  font-size: 18px;
+	  color: #fff;
+	  background: #ff7d13;
+	  border-radius: 3px;
+	  margin: 30px 0 15px;
+	}
+	button{
+		font: 400 14px/1.5 "Hiragino Sans GB","Microsoft YaHei",hei,Arial,"Lucida Grande",Verdana;
+		border: 0;
+		background-color:#FFA042;
+		color:#fff;
+	}
+	ul, ol {
+	  padding-left: 0;
+	  list-style-type: none;
+	}
+	.h{
+		text-align:center;
+		font-size:20px;
+		border-bottom: 1px solid #d9dadc;
+		padding-bottom: 10px;
+	}
+	span{
+	color: #8d8d8d;
+	}
+	li{
+	margin-bottom: 5px;
+	list-style-type:none;
+	}
+	.label{
+		color: #000000;
+		font-size:20px;
+	}
+	h4{
+		border-bottom: 1px solid #d9dadc;
+		padding-bottom: 15px;
+	}*/
+	body{
+		background-color:#D2E9FF;
+	}
+	h3{
+		border-bottom:4px solid #877bc7;
+		padding-bottom:9px;
+		margin-top:30px;
+		width:200px;
+	}
+	input[type="text"]{
+		height:30px;
+		padding:10px 16px;
+		font-size:14px;
+	}
+	.form-group{
+		margin-bottom:10px;
+	}
+	.input-lg{
+		height:60px;
+		font-size:14px;
+	}
+	#cancel,button{
+		background-color:#877bc7;
+		color:white;
+	}
+	.errorC{
+		border:1px solid red;
+	}
+	.error{
+	text-align:left;
+	color:red;
+	}
+	.error{
+		display:none;
+	}
+</style>
+</head>
+<body>
+	<!--  <header style="font-color:#000000">
+		<h1 class="myhead">寻找与你最有夫妻相的人</h1>
+	</header>-->
+	<header>
+		<div class="row" style="margin-left:10px;margin-top:20px">
+			<div class="col-lg-4 col-xs-12">
+				<div class="row">
+					<div class="col-xs-4" style="float:left"><img src="p/images/logo2.png"/></div>
+					<div class="col-xs-8">
+						<h3><span style="color:#7467BF">&nbsp;众里寻</span><span style="color:#e35969;font-size:34px;"><b>ta</b></span></h3>
+					</div>
+				</div>
+			</div>
+		</div>		
+	</header>
+	<div class="row" style="padding-left:10px;padding-right:10px" >
+		<div class="col-lg-1 col-xs-1"></div>
+		<div class="col-lg-3 col-xs-11">
+			<div class="row">
+				<b style="color:black;display:block;text-align:center;font-size:15px">为了帮你找到ta，基本信息是必不可少的哦~ ！</b>
+			</div>
+		</div>
+	</div>
+	<div class="row" style="padding-left:10px;padding-right:10px" >
+		<div class="col-lg-1 col-xs-1"></div>
+		<div class="col-lg-3 col-xs-11">
+			<div class="row" style="margin-left:-20px">
+				<div class="panel-body text-center">
+					<sf:form action="signSingleActivity" role="form"  method="post" id="signSingleActivity" modelAttribute="singleInfo" accept-charset="utf-8" onSubmit="return validate()"> 
+						<div class="row">
+							<div class="col-xs-10">
+								<div class="form-group"> 
+									<sf:input path="name" placeholder="可以告诉我你的大名吗？" class="form-control" /> 
+									<div class="error error1">姓名不能为空</div>
+								</div>
+								<div class="form-group"> 
+									<sf:input path="school" placeholder="那你是哪个学校的呀？" class="form-control" /> 
+									<div class="error error2">学校不能为空</div>
+								</div> 
+								<div class="form-group"> 
+									<sf:input path="college" placeholder="当然还有学院啦！" class="form-control" /> 
+									<div class="error error3">学院不能为空</div>
+								</div>
+								<div class="form-group"> 
+									<sf:input path="grade" placeholder="年级也不能错过哦~" class="form-control" /> 
+									<div class="error error4">年级不能为空</div>
+								</div>
+								<div class="form-group"> 
+									<sf:input path="qq" placeholder="为了让ta联系到你，qq号也得有哦" class="form-control" /> 
+									<div class="error error5">QQ不能为空</div>
+								</div>
+								<div class="form-group"> 
+									<!--<sf:input path="hobby" placeholder="兴趣相投才能更愉快的玩耍！说说你有啥兴趣爱好吧！" class="form-control input-lg" /> -->
+									<textarea id="hobby" placeholder="兴趣相投才能更愉快的玩耍！说说你有啥兴趣爱好吧！" class="form-control input-lg" /></textarea>
+									<div class="error error6">兴趣爱好不能为空</div>
+								</div>
+								<div class="form-group">
+									<b style="color:black;display:block;text-align:left;font-size:15px">你是帅哥还是美女那？</b>
+								</div>
+								<div class="form-group" style="text-align:left;font-size:14px;height:25px"> 
+									<div class="col-xs-6" style="padding-left:0">
+										<sf:radiobutton path="gender" value="boy" style="margin:0" checked="checked"/>&nbsp;我是帅哥哦
+									</div>
+									<div class="col-xs-6" style="padding-left:0">
+										<sf:radiobutton path="gender" value="girl" />&nbsp;我是美女啦 
+									</div>
+									
+								</div>
+								<div class="form-group">
+									<b style="color:black;display:block;text-align:left;font-size:15px">你想找的ta是什么样？</b>
+								</div>
+								<div class="form-group" style="text-align:left;font-size:14px;height:25px;margin-bottom:5px"> 
+									<div class="col-xs-6" style="padding-left:0">
+										<sf:radiobutton path="target" value="0"  checked="checked"/>&nbsp;我要找美女嘛
+									</div>
+									<div class="col-xs-6" style="padding-left:0">
+										<sf:radiobutton path="target" value="1" />&nbsp;我要找小鲜肉
+									</div>						
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group" style="text-align:left;font-size:14px;">
+									<sf:radiobutton path="target" value="2" />&nbsp;我想看看有木有西电里另一个我，汉纸妹纸无所谓
+								</div>
+								<div class="form-group"> 
+									<div class="col-xs-6" style="padding-left:0">
+										<button type="submit" id="sign" class="btn btn-s-md submit">确定</button>
+									</div>
+									<div class="col-xs-6" style="padding-left:0">
+										<a  id="cancel" class="btn btn-s-md" href="<c:out value='singleActivity'/>">取消</a>
+									</div>									
+								</div>
+							</div>
+						</div>
+					</sf:form> 
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	
+</body>
+	<script src="p/js/app.v2.js"></script>
+	<script>
+	
+		$(function(){
+			var a=0;
+			$(".error").hide();
+			$(".form-control").each(function(i){
+				$(this).blur(function(){
+					var v_value=$(this).val();
+					
+					if(v_value == "")
+					{ 
+						//console.log("AAAAAAAAAAAAA");
+						$(this).addClass("errorC");
+						$(this).next().css("display","block");
+						v_value="";
+						
+						
+					}
+					else 
+					{
+						//console.log("BBBBBB");
+						$(this).removeClass("errorC");		
+						$(this).next().css("display","none");
+						v_value="";
+						a++;
+					}
+				});
+			});
+			 $('.submit').click(function(){
+                 if(a==6){
+                     $('form').submit();
+                 }else{
+                	 alert("输入不正确，请检查");
+                     return false;
+                 }
+             });
+		});
+	</script>
+</html>

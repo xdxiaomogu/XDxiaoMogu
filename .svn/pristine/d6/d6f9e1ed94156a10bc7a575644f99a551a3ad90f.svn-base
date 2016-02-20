@@ -1,0 +1,104 @@
+package com.xidian.controller;
+
+import java.io.IOException;
+import java.util.Date;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.xidian.forms.Ranker;
+import com.xidian.forms.User;
+import com.xidian.forms.Votes;
+import com.xidian.service.api.RankerService;
+import com.xidian.service.api.UserService;
+import com.xidian.service.api.VotesService;
+import com.xidian.util.SecurityUtil;
+
+@Controller
+public class RankerController {
+	@Resource(name = "rankerServiceImpl")
+	RankerService rankerService;
+	@Resource(name = "votesServiceImpl")
+	VotesService votesService;
+
+	// 送鲜花或投票功能
+	@RequestMapping(value = "Vote", method = { RequestMethod.POST, RequestMethod.GET })
+	public void login(HttpServletRequest request, HttpServletResponse response) throws JSONException, IOException {
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		JSONObject ret = new JSONObject();
+		// 身份标识，根据此字段保证只能投票一次
+		String identity = request.getParameter("identity");
+		// 投票给somebody
+		String rankerId = request.getParameter("rankerId");
+		try {
+			Votes tmpItem = votesService.getVoteByIdentity(identity);
+			if (tmpItem == null) {
+				Integer tmpRankerId = Integer.parseInt(rankerId);
+				Ranker tmpRanker = rankerService.getRankerById(tmpRankerId);
+				Integer latestNum = tmpRanker.getCountFollowers() + 1;
+				tmpRanker.setCountFollowers(latestNum);
+				rankerService.updateRanker(tmpRanker);
+				ret.put("Response", "送花成功");
+				ret.put("Status", "success");
+			} else {
+				ret.put("Response", "您已经送过鲜花了。。。");
+				ret.put("Status", "fail");
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		response.getWriter().write(ret.toString());
+	}
+	//还没写
+	@RequestMapping(value = "getRanker", method = { RequestMethod.POST, RequestMethod.GET })
+	public void register(HttpServletRequest request, HttpServletResponse response) throws JSONException, IOException {
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		JSONObject ret = new JSONObject();
+		try {
+			String name = request.getParameter("nickName");
+
+			if (true) {
+			
+				ret.put("Status", "success");
+//				ret.put("UserID", newUser.getUid());
+				ret.put("info", "注册成功");
+				ret.put("url", "bbk.htm");
+			} else {
+				ret.put("Status", "fail");
+				ret.put("info", "注册失败");
+				ret.put("UserID", 0);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			ret.put("Status", "fail");
+			ret.put("info", "注册失败");
+			ret.put("UserID", 0);
+		}
+		response.getWriter().write(ret.toString());
+	}
+
+	@RequestMapping(value = "*****", method = { RequestMethod.POST, RequestMethod.GET })
+	public void Logout(HttpServletRequest request, HttpServletResponse response) throws JSONException, IOException {
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		try {
+			HttpSession session = request.getSession(true);
+			session.removeAttribute("user");
+			response.sendRedirect("bbk.htm");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
